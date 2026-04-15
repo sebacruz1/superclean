@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 @theme {
+  --font-sans: var(--font-roboto-flex), system-ui, sans-serif;
   --color-celeste: hsl(194, 88%, 52%); /* rgb(22, 191, 241) */
   --color-azul-oscuro: hsl(225, 100%, 20%); /* rgb(0, 26, 102) */
 
