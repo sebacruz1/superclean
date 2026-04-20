@@ -1,11 +1,14 @@
-import { Navbar } from "@/components/Navbar";
 import { Hero } from "@/components/Hero";
+import { Navbar } from "@/components/Navbar";
+import { About } from "../components/About";
 
-import type { Metadata } from "next";
-import { siteConfig } from "@/lib/seo";
 import { Slide } from "@/components/Slider";
+import { siteConfig } from "@/lib/seo";
 import fs from "fs";
+import type { Metadata } from "next";
 import path from "path";
+import { Services } from "@/components/Services";
+import Contact from "@/components/Contact";
 
 const slideAltByFileName: Record<string, string> = {
   web_limpieza_profesional:
@@ -80,6 +83,9 @@ export default function Home() {
       />
       <Navbar />
       <Hero slides={fotos} />
+      <About />
+      <Services />
+      <Contact />
     </main>
   );
 }
