@@ -1,6 +1,7 @@
 import { Hero } from "@/components/Hero";
 import { Navbar } from "@/components/Navbar";
 import { About } from "../components/About";
+import { Galeria } from "../components/Galeria";
 
 import { Slide } from "@/components/Slider";
 import { siteConfig } from "@/lib/seo";
@@ -9,20 +10,21 @@ import type { Metadata } from "next";
 import path from "path";
 import { Services } from "@/components/Services";
 import Contact from "@/components/Contact";
+import ServerReviews from "@/components/ServerReviews";
 
 const slideAltByFileName: Record<string, string> = {
-  web_limpieza_profesional:
+  "limpieza-profesional":
     "Servicio de limpieza profesional para hogares y empresas",
-  web_limpieza_alfombras_centro:
+  "limpieza-alfombras-centro":
     "Limpieza profunda de alfombras en oficinas y centros comerciales",
-  web_limpieza_alfombras_serv_pro:
+  "limpieza-alfombras-serv-pro":
     "Limpieza profesional de alfombras con personal especializado",
-  web_lavado_pisos:
-    "Lavado y mantencion de pisos en espacios residenciales y comerciales",
-  web_hidrolavado_revestimiento_vinilico:
-    "Hidrolavado de revestimientos vinilicos en exteriores",
-  "web_sanitizado_desinfeccion-1":
-    "Sanitizado y desinfeccion de ambientes de alto transito",
+  "lavado-pisos":
+    "Lavado y mantención de pisos en espacios residenciales y comerciales",
+  "hidrolavado-revestimiento-vinilico":
+    "Hidrolavado de revestimientos vinílicos en exteriores",
+  "sanitizado-desinfeccion":
+    "Sanitizado y desinfección de ambientes de alto tránsito",
 };
 
 function getSlideAlt(fileName: string): string {
@@ -36,6 +38,57 @@ function getSlideAlt(fileName: string): string {
     .trim();
 
   return `Servicio de ${readableName}`;
+}
+
+const trabajoAltByFileName: Record<string, string> = {
+  "hidrolavado-fachadas": "Antes y después de hidrolavado de fachada exterior",
+  "lavado-interior-vehiculos":
+    "Antes y después de lavado de interior de vehículo",
+  "lavado-pisos-duros-2": "Antes y después de lavado de pisos duros",
+  "limpieza-alfombras": "Antes y después de limpieza de alfombras en pasillo",
+  "limpieza-delicada-alfombras":
+    "Limpieza delicada de alfombra con máquina profesional",
+  "limpieza-recuperacion-pisos-flotantes":
+    "Antes y después de recuperación de pisos flotantes",
+};
+
+function getTrabajoAlt(fileName: string): string {
+  const normalizedName = path.parse(fileName).name.toLowerCase();
+  const mappedAlt = trabajoAltByFileName[normalizedName];
+  if (mappedAlt) return mappedAlt;
+
+  const readableName = normalizedName.replace(/[-_]+/g, " ").trim();
+  return `Antes y después de ${readableName}`;
+}
+
+const trabajosHorizontalesFileNames = new Set([
+  "hidrolavado-fachadas.webp",
+  "lavado-interior-vehiculos.webp",
+  "limpieza-alfombras.webp",
+]);
+
+function readWebpImages(
+  carpetaRelativa: string,
+  getAlt: (fileName: string) => string,
+): Slide[] {
+  const directorio = path.join(process.cwd(), "public", carpetaRelativa);
+  try {
+    if (!fs.existsSync(directorio)) {
+      console.warn(`La carpeta ${carpetaRelativa} no existe`);
+      return [];
+    }
+
+    return fs
+      .readdirSync(directorio)
+      .filter((foto) => foto.toLowerCase().endsWith(".webp"))
+      .map((foto) => ({
+        src: `/${carpetaRelativa}/${foto}`,
+        alt: getAlt(foto),
+      }));
+  } catch {
+    console.error(`Error al leer la carpeta ${carpetaRelativa}`);
+    return [];
+  }
 }
 
 export const metadata: Metadata = {
@@ -57,23 +110,14 @@ export default function Home() {
     serviceType: "Servicios de limpieza profesional",
   };
 
-  const directorio = path.join(process.cwd(), "public/images/slides");
-  let fotos: Slide[] = [];
-  try {
-    if (fs.existsSync(directorio)) {
-      fotos = fs
-        .readdirSync(directorio)
-        .filter((foto) => foto.toLowerCase().endsWith(".webp"))
-        .map((foto) => ({
-          src: `/images/slides/${foto}`,
-          alt: getSlideAlt(foto),
-        }));
-    } else {
-      console.warn("La carpeta de fotos no existe");
-    }
-  } catch {
-    console.error("Error al leer el directorio");
-  }
+  const fotos = readWebpImages("images/slides", getSlideAlt);
+  const trabajos = readWebpImages("images/before_after", getTrabajoAlt);
+  const trabajosVerticales = trabajos.filter(
+    (t) => !trabajosHorizontalesFileNames.has(path.basename(t.src)),
+  );
+  const trabajosHorizontales = trabajos.filter((t) =>
+    trabajosHorizontalesFileNames.has(path.basename(t.src)),
+  );
 
   return (
     <main className="min-h-screen bg-white text-secondary overflow-x-hidden">
@@ -85,6 +129,11 @@ export default function Home() {
       <Hero slides={fotos} />
       <About />
       <Services />
+      <Galeria
+        verticales={trabajosVerticales}
+        horizontales={trabajosHorizontales}
+      />
+      <ServerReviews />
       <Contact />
     </main>
   );
