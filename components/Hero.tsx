@@ -8,7 +8,7 @@ export const Hero = ({ slides }: HeroProps) => {
   return (
     <section
       id="hero"
-      className="relative w-full h-[80vh] min-h-[560px] overflow-hidden mt-20 md:mt-24"
+      className="relative w-full h-[80vh] min-h-140 overflow-hidden mt-20 md:mt-24"
     >
       <div className="absolute inset-0 z-0">
         <PhotoSlider slides={slides} interval={4000} />
