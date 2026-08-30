@@ -34,11 +34,13 @@ export const metadata: Metadata = {
     title: siteConfig.name,
     description: siteConfig.description,
     siteName: siteConfig.name,
+    images: [{ url: "/logo.webp", width: 900, height: 300 }],
   },
   twitter: {
     card: "summary_large_image",
     title: siteConfig.name,
     description: siteConfig.description,
+    images: ["/logo.webp"],
   },
   robots: {
     index: true,

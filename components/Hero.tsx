@@ -66,10 +66,14 @@ export const Hero = ({ slides }: HeroProps) => {
         </div>
 
         <div className="relative z-20 h-full flex flex-col items-center justify-center text-center px-4">
-          <h1 className="text-6xl lg:text-7xl font-bold text-white mb-6 drop-shadow-lg">
+          <p
+            role="heading"
+            aria-level={1}
+            className="text-6xl lg:text-7xl font-bold text-white mb-6 drop-shadow-lg"
+          >
             Limpieza Profesional <br />
             <span className="text-blue-400">a tu Medida</span>
-          </h1>
+          </p>
 
           <p className="text-xl text-gray-100 max-w-2xl mb-6 drop-shadow">
             Brindamos soluciones de limpieza impecables para hogares y empresas

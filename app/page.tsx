@@ -12,6 +12,7 @@ import { Services } from "@/components/Services";
 import Contact from "@/components/Contact";
 import ServerReviews from "@/components/ServerReviews";
 import { Footer } from "@/components/Footer";
+import { contactInfo, structuredAddresses } from "@/lib/contact";
 
 const slideAltByFileName: Record<string, string> = {
   "limpieza-profesional":
@@ -103,12 +104,22 @@ export const metadata: Metadata = {
 export default function Home() {
   const organizationSchema = {
     "@context": "https://schema.org",
-    "@type": "LocalBusiness",
-    name: siteConfig.name,
-    description: siteConfig.description,
-    url: siteConfig.url.origin,
-    areaServed: "Chile",
-    serviceType: "Servicios de limpieza profesional",
+    "@graph": structuredAddresses.map((address, index) => ({
+      "@type": "LocalBusiness",
+      "@id": `${siteConfig.url.origin}/#location-${index}`,
+      name: siteConfig.name,
+      description: siteConfig.description,
+      url: siteConfig.url.origin,
+      image: `${siteConfig.url.origin}/logo.webp`,
+      telephone: contactInfo.phoneHref.replace("tel:", ""),
+      email: contactInfo.email,
+      address: {
+        "@type": "PostalAddress",
+        ...address,
+      },
+      areaServed: "Chile",
+      serviceType: "Servicios de limpieza profesional",
+    })),
   };
 
   const fotos = readWebpImages("images/slides", getSlideAlt).map((foto) => {

@@ -8,3 +8,18 @@ export const contactInfo = {
   ],
   hours: "Lunes a Viernes: 08:00 - 18:00",
 };
+
+export const structuredAddresses = [
+  {
+    streetAddress: "1 Norte 361",
+    addressLocality: "Viña del Mar",
+    addressRegion: "Valparaíso",
+    addressCountry: "CL",
+  },
+  {
+    streetAddress: "Apoquindo 7850",
+    addressLocality: "Las Condes",
+    addressRegion: "Región Metropolitana",
+    addressCountry: "CL",
+  },
+];
