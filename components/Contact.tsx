@@ -10,6 +10,7 @@ import {
   MdSend,
 } from "react-icons/md";
 import { ToastContainer, toast } from "react-toastify";
+import { contactInfo } from "@/lib/contact";
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -83,30 +84,35 @@ export default function Contact() {
                 <MdPhone className="w-6 h-6 text-blue-200 mt-1" />
                 <div>
                   <h4 className="font-medium">Teléfono</h4>
-                  <p className="text-blue-100">+56 9 93319653</p>
+                  <p className="text-blue-100">{contactInfo.phone}</p>
                 </div>
               </div>
               <div className="flex items-start gap-4">
                 <MdEmail className="w-6 h-6 text-blue-200 mt-1" />
                 <div>
                   <h4 className="font-medium">Correo Electrónico</h4>
-                  <p className="text-blue-100">infoclean@superclean.cl</p>
+                  <p className="text-blue-100">{contactInfo.email}</p>
                 </div>
               </div>
               <div className="flex items-start gap-4">
                 <MdLocationOn className="w-6 h-6 text-blue-200 mt-1" />
                 <div>
                   <h4 className="font-medium">Ubicación</h4>
-                  <p className="text-blue-100">Viña del Mar, Chile.</p>
+                  <p className="text-blue-100">
+                    {contactInfo.addresses.map((address) => (
+                      <span key={address}>
+                        {address}
+                        <br />
+                      </span>
+                    ))}
+                  </p>
                 </div>
               </div>
               <div className="flex items-start gap-4">
                 <MdAccessTime className="w-6 h-6 text-blue-200 mt-1" />
                 <div>
                   <h4 className="font-medium">Horario de Atención</h4>
-                  <p className="text-blue-100">
-                    Lunes a Viernes: 08:00 - 18:00
-                  </p>
+                  <p className="text-blue-100">{contactInfo.hours}</p>
                 </div>
               </div>
             </div>

@@ -59,7 +59,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" className={robotoFlex.variable}>
+    <html lang="es" className={`${robotoFlex.variable} scroll-smooth`}>
       <body className="min-h-full flex flex-col font-sans">{children}</body>
     </html>
   );

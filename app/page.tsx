@@ -11,6 +11,7 @@ import path from "path";
 import { Services } from "@/components/Services";
 import Contact from "@/components/Contact";
 import ServerReviews from "@/components/ServerReviews";
+import { Footer } from "@/components/Footer";
 
 const slideAltByFileName: Record<string, string> = {
   "limpieza-profesional":
@@ -110,7 +111,16 @@ export default function Home() {
     serviceType: "Servicios de limpieza profesional",
   };
 
-  const fotos = readWebpImages("images/slides", getSlideAlt);
+  const fotos = readWebpImages("images/slides", getSlideAlt).map((foto) => {
+    const mobilePath = foto.src.replace(
+      "/images/slides/",
+      "/images/banner-movil/",
+    );
+    const mobileExists = fs.existsSync(
+      path.join(process.cwd(), "public", mobilePath),
+    );
+    return { ...foto, mobileSrc: mobileExists ? mobilePath : foto.src };
+  });
   const trabajos = readWebpImages("images/before_after", getTrabajoAlt);
   const trabajosVerticales = trabajos.filter(
     (t) => !trabajosHorizontalesFileNames.has(path.basename(t.src)),
@@ -135,6 +145,7 @@ export default function Home() {
       />
       <ServerReviews />
       <Contact />
+      <Footer />
     </main>
   );
 }
