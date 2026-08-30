@@ -2,6 +2,7 @@
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { IoCloseCircleOutline, IoMenu } from "react-icons/io5";
+import Image from "next/image";
 
 export const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -33,13 +34,24 @@ export const Navbar = () => {
     >
       <div className="container mx-auto px-4 flex items-center justify-between">
         {/* Logo */}
-        <a
-          className="text-xl font-black tracking-tighter flex items-center z-50"
-          href="#hero"
-        >
-          <span className="text-primary">Super</span>
-          <span className="text-secondary">Clean</span>
+        <a href="#hero" className="flex items-center z-50">
+          <Image
+            src="/logo.webp"
+            alt="Logo de SuperClean"
+            width={900}
+            height={300}
+            priority
+            unoptimized
+            className="h-10 w-auto"
+          />
         </a>
+        {/* <a */}
+        {/*   className="text-xl font-black tracking-tighter flex items-center z-50" */}
+        {/*   href="#hero" */}
+        {/* > */}
+        {/*   <span className="text-primary">Super</span> */}
+        {/*   <span className="text-secondary">Clean</span> */}
+        {/* </a> */}
 
         {/* PC */}
         <div className="hidden md:flex space-x-8">
