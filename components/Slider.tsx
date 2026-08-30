@@ -7,6 +7,7 @@ export interface Slide {
   src: string;
   alt: string;
   caption?: string;
+  mobileSrc?: string;
 }
 
 interface PhotoSliderProps {

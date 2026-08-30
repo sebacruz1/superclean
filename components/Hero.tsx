@@ -7,7 +7,7 @@ interface HeroProps {
 export const Hero = ({ slides }: HeroProps) => {
   const mobileSlides = slides.map((slide) => ({
     ...slide,
-    src: slide.src.replace("/images/slides/", "/images/banner-movil/"),
+    src: slide.mobileSrc ?? slide.src,
   }));
 
   return (
@@ -29,18 +29,28 @@ export const Hero = ({ slides }: HeroProps) => {
             <span className="text-blue-400">a tu Medida</span>
           </h1>
 
-          <p className="text-lg text-gray-100 max-w-2xl mx-auto mb-10">
+          <p className="text-lg text-gray-100 max-w-2xl mx-auto mb-6">
             Brindamos soluciones de limpieza impecables para hogares y empresas
             en todo Chile, con personal capacitado y confianza garantizada.
           </p>
 
+          <p className="inline-block text-sm font-semibold text-blue-400 border border-blue-400/40 rounded-full px-4 py-1.5 mb-10">
+            +30 años de experiencia
+          </p>
+
           <div className="flex flex-col gap-4">
-            <button className="px-8 py-4 bg-blue-600 text-white font-semibold rounded-full hover:bg-blue-700 transition-all shadow-xl">
+            <a
+              href="#contact"
+              className="px-8 py-4 bg-blue-600 text-white font-semibold rounded-full hover:bg-blue-700 transition-all shadow-xl"
+            >
               Cotizar Ahora
-            </button>
-            <button className="px-8 py-4 bg-white/10 backdrop-blur-md text-white border border-white/30 font-semibold rounded-full hover:bg-white/20 transition-all">
+            </a>
+            <a
+              href="#services"
+              className="px-8 py-4 bg-white/10 backdrop-blur-md text-white border border-white/30 font-semibold rounded-full hover:bg-white/20 transition-all"
+            >
               Nuestros Servicios
-            </button>
+            </a>
           </div>
         </div>
       </div>
@@ -52,7 +62,6 @@ export const Hero = ({ slides }: HeroProps) => {
             slides={slides}
             interval={4000}
             sizes="(min-width: 768px) 100vw, 0px"
-            priority={false}
           />
         </div>
 
@@ -62,18 +71,28 @@ export const Hero = ({ slides }: HeroProps) => {
             <span className="text-blue-400">a tu Medida</span>
           </h1>
 
-          <p className="text-xl text-gray-100 max-w-2xl mb-10 drop-shadow">
+          <p className="text-xl text-gray-100 max-w-2xl mb-6 drop-shadow">
             Brindamos soluciones de limpieza impecables para hogares y empresas
             en todo Chile, con personal capacitado y confianza garantizada.
           </p>
 
+          <p className="inline-block text-base font-semibold text-white bg-blue-600/50 border border-blue-400/40 rounded-full px-5 py-2 mb-10">
+            +30 años de experiencia
+          </p>
+
           <div className="flex flex-row gap-4">
-            <button className="px-8 py-4 bg-blue-600 text-white font-semibold rounded-full hover:bg-blue-700 transition-all shadow-xl hover:scale-105">
+            <a
+              href="#contact"
+              className="px-8 py-4 bg-blue-600 text-white font-semibold rounded-full hover:bg-blue-700 transition-all shadow-xl hover:scale-105"
+            >
               Cotizar Ahora
-            </button>
-            <button className="px-8 py-4 bg-white/10 backdrop-blur-md text-white border border-white/30 font-semibold rounded-full hover:bg-white/20 transition-all">
+            </a>
+            <a
+              href="#services"
+              className="px-8 py-4 bg-white/10 backdrop-blur-md text-white border border-white/30 font-semibold rounded-full hover:bg-white/20 transition-all"
+            >
               Nuestros Servicios
-            </button>
+            </a>
           </div>
         </div>
       </div>
