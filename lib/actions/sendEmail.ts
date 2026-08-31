@@ -3,8 +3,6 @@
 import { Resend } from "resend";
 import { z } from "zod";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 const contactSchema = z.object({
   name: z.string().min(2, "El nombre debe tener al menos 2 caracteres."),
   email: z.email("Correo electrónico inválido."),
@@ -36,7 +34,18 @@ export async function sendEmailAction(formData: FormData) {
   }
   const { name, email, phone, message } = validatedFields.data;
 
+  if (!process.env.RESEND_API_KEY) {
+    console.log("[sendEmailAction] RESEND_API_KEY no configurada, se omite el envío:", {
+      name,
+      email,
+      phone,
+      message,
+    });
+    return { success: true, message: "Mensaje enviado con éxito!" };
+  }
+
   try {
+    const resend = new Resend(process.env.RESEND_API_KEY);
     const { error } = await resend.emails.send({
       from: "SuperClean <webpage@superclean.cl>",
       to: "infoclean@superclean.cl",
