@@ -1,7 +1,6 @@
 "use client";
 
-import emailjs from "@emailjs/browser";
-import { useState, type ChangeEvent, type SubmitEventHandler } from "react";
+import { useRef, useState, type ChangeEvent } from "react";
 import {
   MdAccessTime,
   MdEmail,
@@ -11,6 +10,7 @@ import {
 } from "react-icons/md";
 import { ToastContainer, toast } from "react-toastify";
 import { contactInfo } from "@/lib/contact";
+import { sendEmailAction } from "@/lib/actions/sendEmail";
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -20,6 +20,7 @@ export default function Contact() {
     message: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const formRef = useRef<HTMLFormElement>(null);
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -27,37 +28,18 @@ export default function Contact() {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
-
-  const handleSubmit: SubmitEventHandler<HTMLFormElement> = async (e) => {
-    e.preventDefault();
+  const handleClientSubmit = async (formDataEvent: FormData) => {
     setIsSubmitting(true);
+    const result = await sendEmailAction(formDataEvent);
 
-    try {
-      const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
-      const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
-      const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
+    setIsSubmitting(false);
 
-      if (!serviceId || !templateId || !publicKey) {
-        toast.error("Falta configurar el servicio de correo.");
-        return;
-      }
-
-      const templateParams = {
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone || "No proporcionado",
-        message: formData.message,
-      };
-
-      await emailjs.send(serviceId, templateId, templateParams, publicKey);
-
+    if (result.success) {
       toast.success("¡Mensaje enviado con éxito! Te contactaremos pronto.");
       setFormData({ name: "", email: "", phone: "", message: "" });
-    } catch (error) {
-      console.error("Error al enviar el correo:", error);
-      toast.error("Hubo un error al enviar el mensaje. Intenta nuevamente.");
-    } finally {
-      setIsSubmitting(false);
+      formRef.current?.reset();
+    } else {
+      toast.error(result.error || "Hubo un error al enviar el mensaje.");
     }
   };
 
@@ -123,7 +105,7 @@ export default function Contact() {
               Envíanos un mensaje
             </h3>
 
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form ref={formRef} action={handleClientSubmit} className="space-y-6">
               <div>
                 <label
                   htmlFor="name"
